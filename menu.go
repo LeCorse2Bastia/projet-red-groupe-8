@@ -7,6 +7,7 @@ import (
 func Pause() {
 	fmt.Println("Appuyez sur Entrée pour continuer")
 	fmt.Scanln()
+	fmt.Scanln()
 }
 
 func Menu() {
@@ -51,20 +52,13 @@ func Menu() {
 			}
 			Pause()
 		case 2:
-			switch choixPerso {
-			case 1:
-				fmt.Println("Inventaire :", perso1.Stuff)
-			case 2:
-				fmt.Println("Inventaire :", perso2.Stuff)
-			case 3:
-				fmt.Println("Inventaire :", perso3.Stuff)
-			default:
-				fmt.Println("Choix invalide.")
-			}
+			accessInventory()
 			Pause()
 		case 3:
+			Shop()
 			Pause()
 		case 4:
+			craftItem(Atelier{})
 			Pause()
 		case 5:
 			var choixCombat int

@@ -74,7 +74,7 @@ func Bavure() {
       ^^^ ^^^
 `
 	printSlowly(asciiArt, 15*time.Millisecond)
-	time.Sleep(5 * time.Second)
+	time.Sleep(2 * time.Second)
 }
 func getCurrentPerso() *Perso {
 	switch choixPerso {

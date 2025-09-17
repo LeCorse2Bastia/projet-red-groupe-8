@@ -1,6 +1,14 @@
 package game
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+	"time"
+
+	"github.com/faiface/beep"
+	"github.com/faiface/beep/mp3"
+	"github.com/faiface/beep/speaker"
+)
 
 type Perso struct {
 	Name   string
@@ -12,14 +20,52 @@ type Perso struct {
 	Stuff  string
 }
 
-var choixPerso int
-var Money int
+var (
+	choixPerso   int
+	Money        int
+	streamer     beep.StreamSeekCloser
+	soundControl *os.File
+	format       beep.Format
+)
 
-var perso1 = Perso{"Marc", "Brigade Anti-Émeute", 1, 200, 200, 10, "Matraque / 1 Donut"}
-var perso2 = Perso{"Cyril", "Opérateur Précis", 1, 90, 90, 30, "Matraque / 1 Donut"}
-var perso3 = Perso{"Bastien", "Infiltré", 1, 130, 130, 20, "Matraque / 1 Donut"}
+func playSoundAsync2() {
+	var err error
+	soundControl, err = os.Open("attente.mp3")
+	if err != nil {
+		fmt.Println("Erreur ouverture du fichier audio :", err)
+		return
+	}
+
+	streamer, format, err = mp3.Decode(soundControl)
+	if err != nil {
+		fmt.Println("Erreur décodage mp3 :", err)
+		return
+	}
+
+	speaker.Init(format.SampleRate, format.SampleRate.N(time.Millisecond*50))
+
+	speaker.Play(beep.Seq(streamer, beep.Callback(func() {
+		streamer.Close()
+		soundControl.Close()
+	})))
+}
+
+func stopSound() {
+	if streamer != nil {
+		streamer.Close()
+	}
+	if soundControl != nil {
+		soundControl.Close()
+	}
+}
+
+var perso1 = Perso{"Marc", "Brigade Anti-Émeute", 1, 100, 100, 10, "Matraque / 1 Donut"}
+var perso2 = Perso{"Cyril", "Opérateur Précis", 1, 45, 45, 30, "Matraque / 1 Donut"}
+var perso3 = Perso{"Bastien", "Infiltré", 1, 65, 65, 20, "Matraque / 1 Donut"}
 
 func Initcharacter() {
+	playSoundAsync2()
+
 	HistPerso1 := "Histoire: Toujours en première ligne, il avance lentement, bouclier levé, prêt à encaisser. Silencieux et massif, il ne frappe pas fort, mais il ne tombe jamais. Sa présence seule suffit souvent à calmer les plus téméraires.\n"
 	HistPerso2 := "Histoire: Ancien militaire surnommé le chirurgien, il frappe rarement, mais toujours au bon endroit. Chaque geste est calculé, chaque coup vise à faire tomber net. Calme, froid, redoutablement efficace.\n"
 	HistPerso3 := "Histoire: Cinq ans sous couverture ont fait de lui un prédateur discret. Il frappe vite, fort, sans prévenir. Ni vraiment flic, ni criminel, il connaît les règles de la rue et surtout comment les briser.\n"
@@ -34,6 +80,7 @@ func Initcharacter() {
 
 	fmt.Print("Appuyez sur 1, 2 ou 3 pour choisir votre personnage : ")
 	fmt.Scan(&choixPerso)
+	stopSound()
 
 	switch choixPerso {
 	case 1:

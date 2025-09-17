@@ -102,7 +102,7 @@ func craftItem(atelier Atelier) {
 	}
 }
 
-func main() {
+func Shop() {
 	listItems := Boutique{
 		Soin: []Objet{
 			{"Donuts", 3, 0, 0, 10},
@@ -130,7 +130,7 @@ func main() {
 		},
 	}
 
-	fmt.Println("Bienvenue dans la boutique et l’atelier !\n")
+	fmt.Printf("Bienvenue dans la boutique et l’atelier !\n")
 	fmt.Printf("💰 Vous commencez avec %d€ et %d jetons d’atelier.\n", argent, jetonsAtelier)
 	fmt.Printf("📊 Stats de départ → PV: %d | Dégâts: %d | Protection: %d\n", playerHP, playerDamage, playerProtection)
 
