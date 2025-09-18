@@ -51,19 +51,18 @@ func printSlowly(text string, delay time.Duration) {
 func Bavure() {
 	playSoundAsync()
 
-	asciiArt := `
-       .---.
-  ___ /_____\
- /\.-'( '.' )
-/ /    \_-_/_ 
-\ ` + "`" + `-.-"` + "`" + `'V'//-.
- ` + "`" + `.__,   |// , \
-     |Ll //Ll|\ \
-     |__//   | \_\
-    /---|[]==| / /
-    \__/ |   \/\/
-    /_   | Ll_\|
-     | ^"""^ |
+	asciiArt := `        .---.
+      /_____\
+      ( '.' )
+       \_-_/_ 
+    .-"` + "`" + `'V'//-.
+   / ,   |// , \
+  / /|Ll //Ll|\ \
+ / / |__//   | \_\
+ \ \/---|[]==| / /
+  \/\__/ |   \/\/
+   |/_   | Ll_\|
+     |' ^"""^'|
      |   |   |
      |   |   |
      |   |   |
@@ -71,22 +70,10 @@ func Bavure() {
      L___l___J
       |_ | _|
      (___|___)
-      ^^^ ^^^
-`
+      ^^^ ^^^ `
+
 	printSlowly(asciiArt, 15*time.Millisecond)
 	time.Sleep(2 * time.Second)
-}
-func getCurrentPerso() *Perso {
-	switch choixPerso {
-	case 1:
-		return &perso1
-	case 2:
-		return &perso2
-	case 3:
-		return &perso3
-	default:
-		return nil
-	}
 }
 
 func QuartierCombat() {
@@ -106,7 +93,6 @@ func QuartierCombat() {
 	fmt.Scan(&choix)
 
 	var quartier *Quartier
-
 	switch choix {
 	case "1":
 		quartier = quartiers["Le Panier"]
@@ -133,7 +119,7 @@ func QuartierCombat() {
 	for quartier.PV > 0 && perso.HP > 0 {
 		fmt.Println("\n--- Tour de combat ---")
 		fmt.Printf("%s - PV: %d\n", quartier.Nom, quartier.PV)
-		fmt.Printf("%s - PV: %d/%d\n", perso.Name, perso.HP, perso.MaxHP)
+		fmt.Printf("%s - PV: %d/%d | Dégâts: %d | Protection: %d\n", perso.Name, perso.HP, perso.MaxHP, perso.Damage, perso.Protection)
 
 		fmt.Println("1 - Attaquer")
 		fmt.Println("2 - Passer le tour")
@@ -158,7 +144,10 @@ func QuartierCombat() {
 		}
 
 		if quartier.PV > 0 {
-			degatsQuartier := quartier.DegatsFixes
+			degatsQuartier := quartier.DegatsFixes - perso.Protection
+			if degatsQuartier < 0 {
+				degatsQuartier = 0
+			}
 			perso.HP -= degatsQuartier
 			if perso.HP < 0 {
 				perso.HP = 0
@@ -174,6 +163,7 @@ func QuartierCombat() {
 		fmt.Println("❌ Tu es tombé au combat...")
 	}
 
+	// Vérifie si tous les quartiers sont nettoyés
 	if quartiers["Le Panier"].PV <= 0 &&
 		quartiers["La Marine Bleue"].PV <= 0 &&
 		quartiers["Font Vert"].PV <= 0 &&

@@ -37,16 +37,20 @@ func addToInventory(item Objet) {
 	}
 	inventory = append(inventory, item)
 
-	if item.damage > 0 {
-		playerDamage += item.damage
-	}
-	if item.protection > 0 {
-		playerProtection += item.protection
-	}
-	if item.heal > 0 {
-		playerHP += item.heal
-		if playerHP > 100 {
-			playerHP = 100 //
+	// Appliquer les effets de l'objet au personnage sélectionné
+	perso := getCurrentPerso()
+	if perso != nil {
+		if item.damage > 0 {
+			perso.Damage += item.damage
+		}
+		if item.protection > 0 {
+			perso.Protection += item.protection
+		}
+		if item.heal > 0 {
+			perso.HP += item.heal
+			if perso.HP > perso.MaxHP {
+				perso.HP = perso.MaxHP
+			}
 		}
 	}
 
@@ -65,7 +69,11 @@ func accessInventory() {
 	}
 	fmt.Printf("\n💰 Argent restant : %d€\n", argent)
 	fmt.Printf("🎟️ Jetons d'atelier restants : %d\n", jetonsAtelier)
-	fmt.Printf("\n📊 Stats joueur → PV: %d | Dégâts: %d | Protection: %d\n", playerHP, playerDamage, playerProtection)
+
+	perso := getCurrentPerso()
+	if perso != nil {
+		fmt.Printf("\n📊 Stats joueur → PV: %d/%d | Dégâts: %d | Protection: %d\n", perso.HP, perso.MaxHP, perso.Damage, perso.Protection)
+	}
 }
 
 func acheterObjet(item Objet) {
@@ -132,7 +140,11 @@ func Shop() {
 
 	fmt.Printf("Bienvenue dans la boutique et l’atelier !\n")
 	fmt.Printf("💰 Vous commencez avec %d€ et %d jetons d’atelier.\n", argent, jetonsAtelier)
-	fmt.Printf("📊 Stats de départ → PV: %d | Dégâts: %d | Protection: %d\n", playerHP, playerDamage, playerProtection)
+
+	perso := getCurrentPerso()
+	if perso != nil {
+		fmt.Printf("📊 Stats de départ → PV: %d/%d | Dégâts: %d | Protection: %d\n", perso.HP, perso.MaxHP, perso.Damage, perso.Protection)
+	}
 
 	for {
 		fmt.Println("\nAppuyez sur :")

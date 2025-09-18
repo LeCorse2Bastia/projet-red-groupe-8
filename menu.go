@@ -13,14 +13,14 @@ func Pause() {
 func Menu() {
 	Money = 20
 	for {
-		fmt.Println("\nMenu :")
+		fmt.Println("\n===== MENU PRINCIPAL =====")
 		fmt.Println("1 - Afficher les informations du personnage")
 		fmt.Println("2 - Accéder au contenu de l’inventaire")
 		fmt.Println("3 - Boutique")
 		fmt.Println("4 - Atelier")
 		fmt.Println("5 - Combat")
 		fmt.Println("6 - Quitter")
-		fmt.Println(Money, "$")
+		fmt.Printf("💰 Argent : %d€ | 🎟️ Jetons d'atelier : %d\n", argent, jetonsAtelier)
 
 		var choixMenu int
 		fmt.Print("Faites un choix : ")
@@ -28,42 +28,37 @@ func Menu() {
 
 		switch choixMenu {
 		case 1:
-			switch choixPerso {
-			case 1:
-				fmt.Println("Nom     :", perso1.Name)
-				fmt.Println("Classe  :", perso1.Classe)
-				fmt.Println("Niveau  :", perso1.Level)
-				fmt.Println("HP      :", perso1.HP, "/", perso1.MaxHP)
-				fmt.Println("Dégâts  :", perso1.Damage)
-			case 2:
-				fmt.Println("Nom     :", perso2.Name)
-				fmt.Println("Classe  :", perso2.Classe)
-				fmt.Println("Niveau  :", perso2.Level)
-				fmt.Println("HP      :", perso2.HP, "/", perso2.MaxHP)
-				fmt.Println("Dégâts  :", perso2.Damage)
-			case 3:
-				fmt.Println("Nom     :", perso3.Name)
-				fmt.Println("Classe  :", perso3.Classe)
-				fmt.Println("Niveau  :", perso3.Level)
-				fmt.Println("HP      :", perso3.HP, "/", perso3.MaxHP)
-				fmt.Println("Dégâts  :", perso3.Damage)
-			default:
-				fmt.Println("Choix invalide.")
+			perso := getCurrentPerso()
+			if perso != nil {
+				fmt.Println("\n===== INFOS PERSONNAGE =====")
+				fmt.Println("Nom       :", perso.Name)
+				fmt.Println("Classe    :", perso.Classe)
+				fmt.Println("Niveau    :", perso.Level)
+				fmt.Printf("HP        : %d / %d\n", perso.HP, perso.MaxHP)
+				fmt.Println("Dégâts    :", perso.Damage)
+				fmt.Println("Protection:", perso.Protection)
+				fmt.Println("Équipement:", perso.Stuff)
+			} else {
+				fmt.Println("Aucun personnage sélectionné.")
 			}
 			Pause()
+
 		case 2:
 			accessInventory()
 			Pause()
+
 		case 3:
 			Shop()
 			Pause()
+
 		case 4:
 			craftItem(Atelier{})
 			Pause()
+
 		case 5:
 			var choixCombat int
-			fmt.Println("1 - Descente Quartier")
-			fmt.Println("2 - Bavure")
+			fmt.Println("1 - Descente dans un Quartier")
+			fmt.Println("2 - Bavure (bonus)")
 			fmt.Print("Choisissez : ")
 			fmt.Scan(&choixCombat)
 
@@ -77,9 +72,11 @@ func Menu() {
 				fmt.Println("Choix invalide.")
 			}
 			Pause()
+
 		case 6:
-			fmt.Println("Fermeture du jeu.")
+			fmt.Println("Fermeture du jeu. À bientôt !")
 			return
+
 		default:
 			fmt.Println("Choix invalide.")
 			Pause()

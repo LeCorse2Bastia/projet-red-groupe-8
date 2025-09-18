@@ -11,13 +11,14 @@ import (
 )
 
 type Perso struct {
-	Name   string
-	Classe string
-	Level  int
-	MaxHP  int
-	HP     int
-	Damage int
-	Stuff  string
+	Name       string
+	Classe     string
+	Level      int
+	MaxHP      int
+	HP         int
+	Damage     int
+	Protection int
+	Stuff      string
 }
 
 var (
@@ -59,16 +60,29 @@ func stopSound() {
 	}
 }
 
-var perso1 = Perso{"Marc", "Brigade Anti-Émeute", 1, 100, 100, 10, "Matraque / 1 Donut"}
-var perso2 = Perso{"Cyril", "Opérateur Précis", 1, 45, 45, 30, "Matraque / 1 Donut"}
-var perso3 = Perso{"Bastien", "Infiltré", 1, 65, 65, 20, "Matraque / 1 Donut"}
+var perso1 = Perso{"Marc", "Brigade Anti-Émeute", 1, 100, 100, 10, 0, "Matraque / 1 Donut"}
+var perso2 = Perso{"Cyril", "Opérateur Précis", 1, 45, 45, 30, 0, "Matraque / 1 Donut"}
+var perso3 = Perso{"Bastien", "Infiltré", 1, 65, 65, 20, 0, "Matraque / 1 Donut"}
+
+func getCurrentPerso() *Perso {
+	switch choixPerso {
+	case 1:
+		return &perso1
+	case 2:
+		return &perso2
+	case 3:
+		return &perso3
+	default:
+		return nil
+	}
+}
 
 func Initcharacter() {
 	playSoundAsync2()
 
-	HistPerso1 := "Histoire: Toujours en première ligne, il avance lentement, bouclier levé, prêt à encaisser. Silencieux et massif, il ne frappe pas fort, mais il ne tombe jamais. Sa présence seule suffit souvent à calmer les plus téméraires.\n"
-	HistPerso2 := "Histoire: Ancien militaire surnommé le chirurgien, il frappe rarement, mais toujours au bon endroit. Chaque geste est calculé, chaque coup vise à faire tomber net. Calme, froid, redoutablement efficace.\n"
-	HistPerso3 := "Histoire: Cinq ans sous couverture ont fait de lui un prédateur discret. Il frappe vite, fort, sans prévenir. Ni vraiment flic, ni criminel, il connaît les règles de la rue et surtout comment les briser.\n"
+	HistPerso1 := "Histoire: Toujours en première ligne, il avance lentement, bouclier levé, prêt à encaisser..."
+	HistPerso2 := "Histoire: Ancien militaire surnommé le chirurgien, il frappe rarement, mais toujours au bon endroit..."
+	HistPerso3 := "Histoire: Cinq ans sous couverture ont fait de lui un prédateur discret..."
 
 	fmt.Println("Choisissez votre personnage :")
 	fmt.Println("1 -", perso1.Name, ":", perso1.Classe, "(", perso1.HP, "PV )")
