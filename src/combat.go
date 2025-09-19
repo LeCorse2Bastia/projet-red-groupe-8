@@ -3,12 +3,7 @@ package game
 import (
 	"fmt"
 	"math/rand"
-	"os"
 	"time"
-
-	"github.com/faiface/beep"
-	"github.com/faiface/beep/mp3"
-	"github.com/faiface/beep/speaker"
 )
 
 type Quartier struct {
@@ -25,22 +20,6 @@ var quartiers = map[string]*Quartier{
 	"La Castellane":   {"La Castellane", 100, 6, 80},
 }
 
-func playSoundAsync() {
-	f, err := os.Open("son.mp3")
-	if err != nil {
-		return
-	}
-	streamer, format, err := mp3.Decode(f)
-	if err != nil {
-		return
-	}
-	speaker.Init(format.SampleRate, format.SampleRate.N(time.Millisecond*50))
-	speaker.Play(beep.Seq(streamer, beep.Callback(func() {
-		streamer.Close()
-		f.Close()
-	})))
-}
-
 func printSlowly(text string, delay time.Duration) {
 	for _, char := range text {
 		fmt.Printf("%c", char)
@@ -49,7 +28,7 @@ func printSlowly(text string, delay time.Duration) {
 }
 
 func Bavure() {
-	playSoundAsync()
+	playSoundAsync("./../son.mp3")
 
 	asciiArt := `        .---.
       /_____\
@@ -73,7 +52,8 @@ func Bavure() {
       ^^^ ^^^ `
 
 	printSlowly(asciiArt, 15*time.Millisecond)
-	time.Sleep(2 * time.Second)
+	time.Sleep(5 * time.Second)
+	argent += 10
 }
 
 func QuartierCombat() {
@@ -160,10 +140,10 @@ func QuartierCombat() {
 		fmt.Printf("✅ Tu as nettoyé %s avec succès !\n", quartier.Nom)
 		Money += 40
 	} else if perso.HP <= 0 {
+		playSoundAsync("./../rire.mp3")
 		fmt.Println("❌ Tu es tombé au combat...")
 	}
 
-	// Vérifie si tous les quartiers sont nettoyés
 	if quartiers["Le Panier"].PV <= 0 &&
 		quartiers["La Marine Bleue"].PV <= 0 &&
 		quartiers["Font Vert"].PV <= 0 &&

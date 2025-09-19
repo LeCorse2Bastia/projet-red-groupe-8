@@ -26,10 +26,6 @@ var inventory []Objet
 var jetonsAtelier = 10
 var argent = 20
 
-var playerDamage = 5
-var playerProtection = 0
-var playerHP = 100
-
 func addToInventory(item Objet) {
 	if len(inventory) >= 10 {
 		fmt.Println("❌ Inventaire plein ! Vous ne pouvez pas porter plus de 10 objets.")
@@ -37,7 +33,6 @@ func addToInventory(item Objet) {
 	}
 	inventory = append(inventory, item)
 
-	// Appliquer les effets de l'objet au personnage sélectionné
 	perso := getCurrentPerso()
 	if perso != nil {
 		if item.damage > 0 {
