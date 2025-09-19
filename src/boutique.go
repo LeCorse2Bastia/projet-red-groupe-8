@@ -26,9 +26,14 @@ var inventory []Objet
 var jetonsAtelier = 10
 var argent = 20
 
+var inventoryCapacity = 10
+var inventoryUpgrades = 0
+
+const maxInventoryUpgrades = 3
+
 func addToInventory(item Objet) {
-	if len(inventory) >= 10 {
-		fmt.Println("❌ Inventaire plein ! Vous ne pouvez pas porter plus de 10 objets.")
+	if len(inventory) >= inventoryCapacity {
+		fmt.Printf("❌ Inventaire plein ! Capacité maximale : %d objets.\n", inventoryCapacity)
 		return
 	}
 	inventory = append(inventory, item)
@@ -50,6 +55,16 @@ func addToInventory(item Objet) {
 	}
 
 	fmt.Printf("✅ %s a été ajouté à votre inventaire.\n", item.name)
+}
+
+func upgradeInventorySlot() {
+	if inventoryUpgrades >= maxInventoryUpgrades {
+		fmt.Println("⚠️ Vous avez déjà atteint la limite d'amélioration de l'inventaire (+30 max).")
+		return
+	}
+	inventoryCapacity += 10
+	inventoryUpgrades++
+	fmt.Printf("🎒 Capacité de l'inventaire augmentée ! Nouvelle capacité : %d objets (%d amélioration(s) restante(s)).\n", inventoryCapacity, maxInventoryUpgrades-inventoryUpgrades)
 }
 
 func accessInventory() {
@@ -74,6 +89,13 @@ func accessInventory() {
 func acheterObjet(item Objet) {
 	if argent >= item.price {
 		argent -= item.price
+
+		// 🎒 Cas spécial : Sac à dos
+		if item.name == "Sac à dos" {
+			upgradeInventorySlot()
+			return
+		}
+
 		addToInventory(item)
 		fmt.Printf("🛒 Vous avez acheté %s pour %d€. (Il vous reste %d€)\n", item.name, item.price, argent)
 	} else {
@@ -122,6 +144,7 @@ func Shop() {
 			{"Casque de patrouille", 10, 0, 5, 0},
 			{"Gilet pare-balles", 30, 0, 15, 0},
 			{"Plaque renforcée", 35, 0, 20, 0},
+			{"Sac à dos", 30, 0, 0, 0},
 		},
 	}
 

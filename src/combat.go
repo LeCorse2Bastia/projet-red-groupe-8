@@ -139,6 +139,8 @@ func QuartierCombat() {
 	if quartier.PV <= 0 && perso.HP > 0 {
 		fmt.Printf("✅ Tu as nettoyé %s avec succès !\n", quartier.Nom)
 		Money += 40
+		jetonsAtelier += 10
+		fmt.Println("🎟️ +3 jetons d’atelier gagnés pour cette victoire !")
 	} else if perso.HP <= 0 {
 		playSoundAsync("./../rire.mp3")
 		fmt.Println("❌ Tu es tombé au combat...")
