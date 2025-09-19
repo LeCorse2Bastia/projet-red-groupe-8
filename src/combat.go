@@ -154,7 +154,6 @@ func QuartierCombat() {
 		Money += 100
 	}
 
-	Pause()
 }
 
 func ResetQuartiers() {

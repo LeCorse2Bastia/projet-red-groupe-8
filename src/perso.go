@@ -44,9 +44,9 @@ func PrintWelcome() {
 	printSlowly(msg2, 3*time.Millisecond)
 }
 
-var perso1 = Perso{"Marc", "Brigade Anti-Émeute", 1, 100, 100, 10, 0, "Matraque / 1 Donut"}
-var perso2 = Perso{"Cyril", "Opérateur Précis", 1, 45, 45, 30, 0, "Matraque / 1 Donut"}
-var perso3 = Perso{"Bastien", "Infiltré", 1, 65, 65, 20, 0, "Matraque / 1 Donut"}
+var perso1 = Perso{"Marc", "Brigade Anti-Émeute", 1, 100, 100, 10, 0, "Matraque"}
+var perso2 = Perso{"Cyril", "Opérateur Précis", 1, 45, 45, 30, 0, "Matraque"}
+var perso3 = Perso{"Bastien", "Infiltré", 1, 65, 65, 20, 0, "Matraque "}
 
 func getCurrentPerso() *Perso {
 	switch choixPerso {
